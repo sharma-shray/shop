@@ -87,3 +87,97 @@ test('has title', async ({ page }) => {
     await expect(shopButton).toHaveAttribute('href', '/list/mens_tshirts');
     await expect(shopButton).toHaveText('Shop Now');
   });
+
+ 
+test.describe('Check all links exist and verify redirection', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('localhost:8081');
+  });
+
+  test('Check Men\'s Outerwear link and redirection', async ({ page }) => {
+    const link = page.getByRole('link', { name: 'Men\'s Outerwear', exact: true });
+    
+    // Check the link exists and has correct text
+    await expect(link).toBeVisible();
+
+    // Click and verify redirection
+    await link.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('http://localhost:8081/list/mens_outerwear');
+
+    // Go back to the original page
+    await page.goBack();
+  });
+
+  test('Check Ladies Outerwear link and redirection', async ({ page }) => {
+    const link = page.getByRole('link', { name: 'Ladies Outerwear', exact: true });
+    
+    // Check the link exists and has correct text
+    await expect(link).toBeVisible();
+   // await expect(link).toHaveText("Ladies Outerwear");
+
+    // Click and verify redirection
+    await link.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('http://localhost:8081/list/ladies_outerwear');
+
+    // Go back to the original page
+    await page.goBack();
+  });
+
+  test('Check Men\'s T-Shirts link and redirection', async ({ page }) => {
+    const link = page.getByRole('link', { name: 'Men\'s T-Shirts', exact: true });
+    
+    // Check the link exists and has correct text
+    await expect(link).toBeVisible();
+   // await expect(link).toHaveText("Men's T-Shirts");
+
+    // Click and verify redirection
+    await link.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('http://localhost:8081/list/mens_tshirts');
+
+    // Go back to the original page
+    await page.goBack();
+  });
+
+  test('Check Ladies T-Shirts link and redirection', async ({ page }) => {
+    const link = page.getByRole('link', { name: 'Ladies T-Shirts', exact: true });
+    
+    // Check the link exists and has correct text
+    await expect(link).toBeVisible();
+
+    // Click and verify redirection
+    await link.click();
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('http://localhost:8081/list/ladies_tshirts');
+
+    // Go back to the original page
+    await page.goBack();
+  });
+
+});
+
+
+test.describe('Check cart link and redirection', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('localhost:8081');
+  });
+
+  test('Check cart link and redirect to cart page', async ({ page }) => {
+    const cartLink = page.locator('a[href="/cart"]');
+
+    // Check that the cart link is visible
+    await expect(cartLink).toBeVisible();
+
+    await cartLink.click();
+
+    // Wait for the navigation to complete
+    await page.waitForLoadState('networkidle');
+
+    // Assert that the URL contains '/cart'
+    await expect(page).toHaveURL('http://localhost:8081/cart');
+  });
+});
