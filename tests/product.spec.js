@@ -75,3 +75,56 @@ test('image exists', async ({ page }) => {
     const ladiesTshirtsTab = tabContainer.locator('a[href="/list/ladies_tshirts"]');
     await expect(ladiesTshirtsTab).toBeVisible();
   });
+
+    test('should check if the Ladies Outerwear image exists', async ({ page }) => {
+      await page.goto('http://localhost:8081/list/ladies_outerwear'); 
+  
+      // Check if the image exists
+      const image = await page.getByRole('img', { name: 'Ladies Outerwear' });
+    
+      //image is visible
+      await expect(image).toBeVisible();
+    
+      await expect(image).toHaveAttribute('src', 'images/ladies_outerwear.jpg');
+    });
+
+
+test('should check if the header for Ladies Outerwear exists', async ({ page }) => {
+  await page.goto('http://localhost:8081/list/ladies_outerwear'); 
+  
+  //  text "Ladies Outerwear"
+  const headerTitle = await page.locator('header h1');
+  await expect(headerTitle).toHaveText('Ladies Outerwear');
+
+  //  "(6 items)"
+  const headerItems = await page.locator('header span');
+  await expect(headerItems).toHaveText('(6 items)');
+});
+
+
+test('should check if specific list items in the grid exist', async ({ page }) => {
+  await page.goto('http://localhost:8081/list/ladies_outerwear'); 
+  
+  // Check if the <ul> with class 'grid' exists
+  const ulGrid = await page.locator('ul.grid');
+  await expect(ulGrid).toBeVisible();
+
+  // Check each individual list item and its link
+  const firstItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Modern+Stretch+Full+Zip"]');
+  await expect(firstItem).toBeVisible();
+
+  const secondItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Colorblock+Wind+Jacket"]');
+  await expect(secondItem).toBeVisible();
+
+  const thirdItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Voyage+Fleece+Jacket"]');
+  await expect(thirdItem).toBeVisible();
+
+  const fourthItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Pullover+L+S+Hood"]');
+  await expect(fourthItem).toBeVisible();
+
+  const fifthItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Sonoma+Hybrid+Knit+Jacket"]');
+  await expect(fifthItem).toBeVisible();
+
+  const sixthItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Yerba+Knit+Quarter+Zip"]');
+  await expect(sixthItem).toBeVisible();
+});
