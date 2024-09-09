@@ -128,3 +128,69 @@ test('should check if specific list items in the grid exist', async ({ page }) =
   const sixthItem = await page.locator('ul.grid li a[href="/detail/ladies_outerwear/Ladies+Yerba+Knit+Quarter+Zip"]');
   await expect(sixthItem).toBeVisible();
 });
+
+
+test('Check link existence, click, and redirection', async ({ page }) => {
+  await page.goto('http://localhost:8081/list/mens_outerwear');
+
+  // Locate the link 
+  const link = page.locator('a[href="/detail/mens_outerwear/Men+s+Tech+Shell+Full-Zip"]');
+  
+  // link is visible
+  await expect(link).toBeVisible();
+
+  await link.click();
+
+  // Wait for navigation after the click
+  await page.waitForURL('http://localhost:8081/detail/mens_outerwear/Men+s+Tech+Shell+Full-Zip');
+
+  // Verify that the current URL is correct after redirection
+  await expect(page).toHaveURL('http://localhost:8081/detail/mens_outerwear/Men+s+Tech+Shell+Full-Zip');
+});
+
+
+test('Check image existence and visibility', async ({ page }) => {
+  await page.goto('http://localhost:8081/detail/mens_outerwear/Men+s+Tech+Shell+Full-Zip');
+
+  //  image element by its id
+  const image = page.getByRole('img', { name: 'Men\'s Tech Shell Full-Zip' });
+
+  //  image is visible on the page
+  await expect(image).toBeVisible();
+
+  await expect(image).toHaveAttribute('src', 'data/images/10-15068A.jpg');
+});
+
+
+test('Check product detail elements exist', async ({ page }) => {
+  await page.goto('http://localhost:8081/detail/mens_outerwear/Men+s+Tech+Shell+Full-Zip');
+  
+  // product title exists
+  const productTitle = page.locator('div.detail h1');
+  await expect(productTitle).toBeVisible();
+  await expect(productTitle).toHaveText("Men's Tech Shell Full-Zip");
+
+  //  price exists
+  const price = page.locator('div.detail .price');
+  await expect(price).toBeVisible();
+  await expect(price).toHaveText('$50.20');
+
+  // the size select dropdown exists
+  const sizeSelect = page.locator('select#sizeSelect');
+  await expect(sizeSelect).toBeVisible();
+  await expect(sizeSelect).toHaveValue('M'); //'M' is selected
+
+  //quantity select dropdown exists
+  const quantitySelect = page.locator('select#quantitySelect');
+  await expect(quantitySelect).toBeVisible();
+  await expect(quantitySelect).toHaveValue('1');
+
+  //  description exists
+  const description = page.locator('div.detail .description p#desc');
+  await expect(description).toBeVisible();
+  await expect(description).toContainText('A versatile full-zip that you can wear all day long');
+
+  // "Add to Cart" button exists
+  const addToCartButton = page.locator('shop-button button[aria-label="Add this item to cart"]');
+  await expect(addToCartButton).toBeVisible();
+});
