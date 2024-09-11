@@ -194,3 +194,40 @@ test('Check product detail elements exist', async ({ page }) => {
   const addToCartButton = page.locator('shop-button button[aria-label="Add this item to cart"]');
   await expect(addToCartButton).toBeVisible();
 });
+
+
+test('check first three shop list items exist', async ({ page }) => {
+  // Navigate to the page containing the list
+  await page.goto('http://localhost:8081/list/ladies_tshirts'); 
+
+  const firstItem = page.locator('ul.grid > li:nth-of-type(1) > a');
+  const secondItem = page.locator('ul.grid > li:nth-of-type(2) > a');
+  const thirdItem = page.locator('ul.grid > li:nth-of-type(3) > a');
+
+  // Define locators for titles and prices within each item
+  const firstItemTitle = firstItem.locator('shop-list-item >> .title'); 
+  const firstItemPrice = firstItem.locator('shop-list-item >> .price'); 
+
+  const secondItemTitle = secondItem.locator('shop-list-item >> .title'); 
+  const secondItemPrice = secondItem.locator('shop-list-item >> .price');
+
+  const thirdItemTitle = thirdItem.locator('shop-list-item >> .title'); 
+  const thirdItemPrice = thirdItem.locator('shop-list-item >> .price'); 
+
+  // Check that each of the first three items is visible
+  await expect(firstItem).toBeVisible();
+  await expect(secondItem).toBeVisible();
+  await expect(thirdItem).toBeVisible();
+
+  // Verify the title and price for the first item
+  await expect(firstItemTitle).toHaveText('Ladies Chrome T-Shirt'); 
+  await expect(firstItemPrice).toHaveText('$13.30'); 
+
+  // Verify the title and price for the second item
+  await expect(secondItemTitle).toHaveText('Ladies Google New York T-Shirt');
+  await expect(secondItemPrice).toHaveText('$18.35'); 
+
+  // Verify the title and price for the third item
+  await expect(thirdItemTitle).toHaveText('Ladies Gmail T-Shirt'); 
+  await expect(thirdItemPrice).toHaveText('$16.40'); 
+});
